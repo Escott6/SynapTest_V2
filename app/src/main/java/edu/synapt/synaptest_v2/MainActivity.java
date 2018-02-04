@@ -4,6 +4,7 @@ package edu.synapt.synaptest_v2;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,9 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import edu.synapt.synaptest_v2.cardStructures.FlashCard;
+
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, StudySetsFragment.OnHeadLineSelectedListener {
 
     private DrawerLayout drawer;
 
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
     }
 
@@ -111,5 +115,12 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawers();
 
         return true;
+    }
+
+    @Override
+    public void onStudySetSelected(int postiton) {
+        // The user selected the headline of an article from the HeadlinesFragment
+        // Do something here to display that article
+
     }
 }

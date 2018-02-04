@@ -1,15 +1,20 @@
 package edu.synapt.synaptest_v2;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import edu.synapt.synaptest_v2.cardStructures.Category;
 import edu.synapt.synaptest_v2.RecyclerViewStuff.CategoryAdapter;
@@ -27,8 +32,9 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class StudySetsFragment extends Fragment {
+    OnHeadLineSelectedListener mCallback;
     private RecyclerView coursesRecyclerView;
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -40,6 +46,10 @@ public class StudySetsFragment extends Fragment {
     private CategoryAdapter mAdapter;
     private CategoryAdapter mAdapter2;
     private List<Category> CategoryList;
+
+    public interface OnHeadLineSelectedListener {
+        public void onStudySetSelected(int postiton);
+    }
 
 
     // TODO: Rename and change types of parameters
@@ -97,9 +107,21 @@ public class StudySetsFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView2.setAdapter(mAdapter2);
 
-        // Gets study list data from the database
-        // ArrayList<String> myDataList = fetchDataFromDB(); // will return Data from DB
-        //  CategoryAdapter adapter = new CategoryAdapter(myDataList);
+
+        FloatingActionButton fab1 = view.findViewById(R.id.fab1);
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+             public void onClick(View v) {
+                Fragment myFrag = null;
+                Class fragmentClass = CreateFlashcard.class;
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.screen_area, myFrag).commit();
+            }
+        });
+
+                // Gets study list data from the database
+                // ArrayList<String> myDataList = fetchDataFromDB(); // will return Data from DB
+                //  CategoryAdapter adapter = new CategoryAdapter(myDataList);
 
         return view;
     }
@@ -114,6 +136,14 @@ public class StudySetsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        //This makes sure the container activity has implemented the
+        //callback interface
+        try{
+            mCallback = (OnHeadLineSelectedListener) context;
+        }catch (ClassCastException e){
+            throw new ClassCastException(context.toString() + " implement the interface");
+        }
     }
 
     @Override
@@ -121,8 +151,16 @@ public class StudySetsFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
     /**
+     * could be called when a user clicks a list item. Then use the callback interface
+     * to deliver the event to the parent activity
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id){
+        mCallback.onArticleSelected(position);
+    }
+
+
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
