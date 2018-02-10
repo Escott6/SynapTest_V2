@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Evan on 2/7/2018.
@@ -22,13 +22,13 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP =0;
 
-    @Bind(R.id.input_email)
+    @BindView(R.id.input_email)
     EditText _emailText;
-    @Bind(R.id.input_password)
+    @BindView(R.id.input_password)
     EditText _passwordText;
-    @Bind(R.id.btn_login)
+    @BindView(R.id.btn_login)
     Button _loginButton;
-    @Bind(R.id.link_signup)
+    @BindView(R.id.link_signup)
     TextView _signupLink;
 
     @Override
@@ -74,8 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
-
+        // TODO: Implement authentication logic here.
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -94,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 // TODO: Implement successful signup logic here
                 // By default we just finish the Activity and log them in automatically
+                // If a new user is created we should have them go through a tutorial
                 this.finish();
             }
         }
@@ -107,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
+        setResult(RESULT_OK, null);
         finish();
     }
 
